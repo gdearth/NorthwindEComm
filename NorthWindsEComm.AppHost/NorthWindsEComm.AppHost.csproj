@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>eccc5994-a69d-419c-94ae-89163a640b2f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.1" />
+    <PackageReference Include="Aspire.Hosting.Kafka" Version="8.1.0" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="8.1.0" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NorthWindsEComm.Categories.Api\NorthWindsEComm.Categories.Api.csproj" />
+    <ProjectReference Include="..\NorthWindsEComm.Gateway\NorthWindsEComm.Gateway.csproj" />
+    <ProjectReference Include="..\NorthWindsEComm.Products.Api\NorthWindsEComm.Products.Api.csproj" />
+    <ProjectReference Include="..\NorthWindsEComm.Suppliers.Api\NorthWindsEComm.Suppliers.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="sqlserverscripts\instnwnd.sql" />
+    <Resource Include="sqlserverscripts\instnwnd.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="sqlserverconfig\configure-db.sh" />
+    <Resource Include="sqlserverconfig\configure-db.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="sqlserverconfig\entrypoint.sh" />
+    <Resource Include="sqlserverconfig\entrypoint.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>

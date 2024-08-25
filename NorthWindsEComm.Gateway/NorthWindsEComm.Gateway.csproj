@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+        <PackageReference Include="Ocelot" Version="23.3.3" />
+        <PackageReference Include="Ocelot.Administration" Version="23.3.3" />
+        <PackageReference Include="Ocelot.Tracing.OpenTracing" Version="23.3.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+      <Content Update="ocelot.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NorthWindsEComm.Products.Api\NorthWindsEComm.Products.Api.csproj" />
+      <ProjectReference Include="..\NorthWindsEComm.ServiceDefaults\NorthWindsEComm.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\NorthWindsEComm.Suppliers.Api\NorthWindsEComm.Suppliers.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Configuration.ConfigurationManager">
+        <HintPath>..\NorthWindsEComm.Products.Api\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+@NorthWindsEComm.Gateway_HostAddress = http://localhost:5075
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/suppliers
+Accept: application/json
+
+###
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/suppliers/1
+Accept: application/json
+
+###
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/products
+Accept: application/json
+
+###
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/products/1
+Accept: application/json
+
+###
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/v1/products/1
+Accept: application/json

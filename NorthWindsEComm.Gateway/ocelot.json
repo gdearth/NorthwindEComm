@@ -1,0 +1,108 @@
+﻿{
+  "Routes": [
+    {
+      "UpstreamHttpMethod": ["GET", "POST"],
+      "UpstreamPathTemplate": "/api/{version}/products",
+      "DownstreamPathTemplate": "/{version}/products",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5158
+        }
+      ],
+      "Priority": 1,
+      "Key": "allProducts"
+    },
+    {
+      "UpstreamHttpMethod": ["GET"],
+      "UpstreamPathTemplate": "/api/{version}/products/{productId}",
+      "DownstreamPathTemplate": "/{version}/products/{productId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5158
+        }
+      ],
+      "Priority": 0,
+      "Key": "product"
+    },
+    {
+      "UpstreamHttpMethod": ["GET", "POST"],
+      "UpstreamPathTemplate": "/api/{version}/suppliers",
+      "DownstreamPathTemplate": "/{version}/suppliers",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5105
+        }
+      ],
+      "Priority": 1
+    },
+    {
+      "UpstreamHttpMethod": ["GET", "POST"],
+      "UpstreamPathTemplate": "/api/{version}/suppliers/{supplierId}",
+      "DownstreamPathTemplate": "/{version}/suppliers/{supplierId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5105
+        }
+      ],
+      "Key": "supplier",
+      "Priority": 0
+    },{
+      "UpstreamHttpMethod": ["GET", "POST"],
+      "UpstreamPathTemplate": "/api/{version}/categories",
+      "DownstreamPathTemplate": "/{version}/categories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5091
+        }
+      ],
+      "Priority": 1,
+      "Key": "allCategories"
+    },
+    {
+      "UpstreamHttpMethod": ["GET"],
+      "UpstreamPathTemplate": "/api/{version}/categories/{categoryId}",
+      "DownstreamPathTemplate": "/{version}/categories/{categoryId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5091
+        }
+      ],
+      "Priority": 0,
+      "Key": "category"
+    }
+  ],
+  "Aggregates": [
+    {
+      "UpstreamPathTemplate": "/agg/{version}/products/{productId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteKeys": [ "product", "supplier", "category" ],
+      "RouteKeysConfig" : [
+        {
+          "RouteKey" : "supplier",
+          "JsonPath": "$.supplierId",
+          "Parameter": "supplierId"
+        },
+        {
+          "RouteKey" : "category",
+          "JsonPath": "$.categoryId",
+          "Parameter": "categoryId"
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5075"
+  }
+}
