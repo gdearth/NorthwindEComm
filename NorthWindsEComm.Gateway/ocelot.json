@@ -39,7 +39,8 @@
           "Port": 5105
         }
       ],
-      "Priority": 1
+      "Priority": 1,
+      "Key": "allSuppliers"
     },
     {
       "UpstreamHttpMethod": ["GET", "POST"],
@@ -54,7 +55,22 @@
       ],
       "Key": "supplier",
       "Priority": 0
-    },{
+    },
+    {
+      "UpstreamHttpMethod": ["GET"],
+      "UpstreamPathTemplate": "/api/{version}/categories/{categoryId}/products",
+      "DownstreamPathTemplate": "/{version}/products?categoryId={categoryId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5158
+        }
+      ],
+      "Priority": 2,
+      "Key": "productsByCategoryId"
+    },
+    {
       "UpstreamHttpMethod": ["GET", "POST"],
       "UpstreamPathTemplate": "/api/{version}/categories",
       "DownstreamPathTemplate": "/{version}/categories",
@@ -85,6 +101,11 @@
   ],
   "Aggregates": [
     {
+      "UpstreamPathTemplate": "/agg/{version}/fillCache",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteKeys": [ "allProducts", "allSuppliers", "allCategories" ]
+    },
+    {
       "UpstreamPathTemplate": "/agg/{version}/products/{productId}",
       "UpstreamHttpMethod": [ "Get" ],
       "RouteKeys": [ "product", "supplier", "category" ],
@@ -100,6 +121,11 @@
           "Parameter": "categoryId"
         }
       ]
+    },
+    {
+      "UpstreamPathTemplate": "/agg/{version}/categories/{categoryId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteKeys": [ "productsByCategoryId", "category" ]
     }
   ],
   "GlobalConfiguration": {

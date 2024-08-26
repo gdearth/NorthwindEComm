@@ -1,24 +1,82 @@
 @NorthWindsEComm.Gateway_HostAddress = http://localhost:5075
+@version = v1
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/suppliers
+GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/{{version}}/fillCache
 Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response content-type is json", function () {
+        const type = response.contentType.mimeType;
+        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
+    });
+%}
 
 ###
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/suppliers/1
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/{{version}}/suppliers
 Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
 
 ###
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/products
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/{{version}}/suppliers/1
 Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
 
 ###
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/api/v1/products/1
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/{{version}}/products
 Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
 
 ###
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/v1/products/1
+GET {{NorthWindsEComm.Gateway_HostAddress}}/api/{{version}}/products/1
 Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+###
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/{{version}}/products/1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+###
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/{{version}}/categories/1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}

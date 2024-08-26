@@ -1,6 +1,35 @@
 @NorthWindsEComm.Products.Api_HostAddress = http://localhost:5158
+@NorthWindsEComm.Products.Api_Version = v1
 
-GET {{NorthWindsEComm.Products.Api_HostAddress}}/weatherforecast/
+GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{NorthWindsEComm.Products.Api_Version}}/products/
 Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+###
+
+GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{NorthWindsEComm.Products.Api_Version}}/products/1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+###
+
+GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{NorthWindsEComm.Products.Api_Version}}/products?categoryId=1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
 
 ###

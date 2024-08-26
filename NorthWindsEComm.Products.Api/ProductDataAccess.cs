@@ -3,7 +3,7 @@ using NorthWindsEComm.CrudHelper;
 
 namespace NorthWindsEComm.Products.Api;
 
-public class ProductDataAccess : ICrudDataAccess<Product>
+public class ProductDataAccess : IProductDataAccess
 {
     private readonly NorthWindsDbContext _dbContext;
 
@@ -50,5 +50,10 @@ public class ProductDataAccess : ICrudDataAccess<Product>
         
         _dbContext.Products.Remove(product);
         return true;
+    }
+
+    public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Products.Where(p => p.CategoryId == categoryId).ToListAsync(cancellationToken);
     }
 }

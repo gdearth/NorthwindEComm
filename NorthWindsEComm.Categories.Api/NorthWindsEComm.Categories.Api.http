@@ -1,6 +1,24 @@
 @NorthWindsEComm.Categories.Api_HostAddress = http://localhost:5091
+@version = v1
 
-GET {{NorthWindsEComm.Categories.Api_HostAddress}}/weatherforecast/
+GET {{NorthWindsEComm.Categories.Api_HostAddress}}/{{version}}/Categories
 Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+###
+
+GET {{NorthWindsEComm.Categories.Api_HostAddress}}/{{version}}/Categories/1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
 
 ###
