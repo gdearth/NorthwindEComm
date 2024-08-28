@@ -80,3 +80,38 @@ Accept: application/json
         client.assert(response.status === 200, "Response status is not 200");
     });
 %}
+
+###
+
+POST {{NorthWindsEComm.Gateway_HostAddress}}/administration/connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=admin&client_secret=secret&scope=admin&grant_type=client_credentials
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.global.set("auth_token", response.body.access_token);
+    });
+%}
+
+###
+
+GET {{NorthWindsEComm.Gateway_HostAddress}}/administration/configuration
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.global.set("ocelot_config", response.body);
+    });
+%}
+
+###
+
+POST {{NorthWindsEComm.Gateway_HostAddress}}/administration/configuration
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{{ocelot_config}}

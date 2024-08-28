@@ -2,6 +2,7 @@ using NorthWindsEComm.Gateway;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Microsoft.Extensions.Hosting;
+using Ocelot.Administration;using Ocelot.Configuration.File;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,8 @@ builder.AddServiceDefaults();
 builder.Services.AddHttpClient<ProductWithSupplierAggregator>();
 
 builder.Services.AddOcelot()
-    .AddTransientDefinedAggregator<ProductWithSupplierAggregator>();
+    .AddTransientDefinedAggregator<ProductWithSupplierAggregator>()
+    .AddAdministration("/administration", "secret");
 
 
 var app = builder.Build();
