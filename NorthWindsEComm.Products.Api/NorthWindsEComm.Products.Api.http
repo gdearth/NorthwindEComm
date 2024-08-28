@@ -1,7 +1,7 @@
 @NorthWindsEComm.Products.Api_HostAddress = http://localhost:5158
-@NorthWindsEComm.Products.Api_Version = v1
+@version = v1
 
-GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{NorthWindsEComm.Products.Api_Version}}/products/
+GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{version}}/products/
 Accept: application/json
 
 > {%
@@ -12,7 +12,7 @@ Accept: application/json
 
 ###
 
-GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{NorthWindsEComm.Products.Api_Version}}/products/1
+GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{version}}/products/1
 Accept: application/json
 
 > {%
@@ -23,7 +23,7 @@ Accept: application/json
 
 ###
 
-GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{NorthWindsEComm.Products.Api_Version}}/products?categoryId=1
+GET {{NorthWindsEComm.Products.Api_HostAddress}}/{{version}}/products?categoryId=1
 Accept: application/json
 
 > {%

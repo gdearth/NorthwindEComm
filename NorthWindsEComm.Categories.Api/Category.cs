@@ -3,6 +3,8 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using NorthWindsEComm.CrudHelper;
 
+namespace NorthWindsEComm.Categories.Api;
+
 public class Category : IIdModel
 {
     [IgnoreDataMember]

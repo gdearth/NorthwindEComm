@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using NorthWindsEComm.CrudHelper;
 using NorthWindsEComm.Suppliers.Api;
 
@@ -9,15 +11,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new ApiVersion(1, 0);
+    config.AssumeDefaultVersionWhenUnspecified = true;
     config.ReportApiVersions = true;
-    config.AssumeDefaultVersionWhenUnspecified = false;
-    config.ApiVersionReader = new UrlSegmentApiVersionReader();
-}).AddApiExplorer(config=>{config.GroupNameFormat = "v'V'";});
+}).AddApiExplorer(config =>
+{
+    config.GroupNameFormat = "'v'VVV";
+    config.SubstituteApiVersionInUrl = true;
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = $"Suppliers v1", Version = "v1" });
+    var filePath = Path.Combine(AppContext.BaseDirectory, $"NorthWindsEComm.Suppliers.Api.xml");
+    options.IncludeXmlComments(filePath);
+});
 builder.AddServiceDefaults();
 
 builder.AddSqlServerDbContext<SupplierContext>("northWindsData");
@@ -31,17 +41,26 @@ builder.Services.AddTransient<ICrudDataAccess<Supplier>, SupplierDataAccess>();
 var app = builder.Build();
 app.MapDefaultEndpoints();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 ApiVersionSet apiVersionSet = app.NewApiVersionSet("suppliers-api")
     .HasApiVersion(new ApiVersion(1))
     .ReportApiVersions()
     .Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        var descriptions = app.DescribeApiVersions();
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = $"Suppliers {description.GroupName}";
+            options.SwaggerEndpoint(url, name);
+        }
+    });
+}
 
 app.UseHttpsRedirection();
 

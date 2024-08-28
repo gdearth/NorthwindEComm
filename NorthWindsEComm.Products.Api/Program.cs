@@ -1,7 +1,12 @@
+using System.Threading;
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using NorthWindsEComm.CrudHelper;
 using NorthWindsEComm.Products.Api;
 using ApiVersion = Asp.Versioning.ApiVersion;
@@ -11,15 +16,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new ApiVersion(1, 0);
+    config.AssumeDefaultVersionWhenUnspecified = true;
     config.ReportApiVersions = true;
-    config.AssumeDefaultVersionWhenUnspecified = false;
-    config.ApiVersionReader = new UrlSegmentApiVersionReader();
-}).AddApiExplorer(config=>{config.GroupNameFormat = "v'V'";});
+}).AddApiExplorer(config =>
+{
+    config.GroupNameFormat = "'v'VVV";
+    config.SubstituteApiVersionInUrl = true;
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = $"Products v1", Version = "v1" });
+    var filePath = Path.Combine(AppContext.BaseDirectory, $"NorthWindsEComm.Products.Api.xml");
+    options.IncludeXmlComments(filePath);
+});
 
 builder.AddServiceDefaults();
 
@@ -39,7 +52,16 @@ app.MapDefaultEndpoints();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var descriptions = app.DescribeApiVersions();
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = $"Products {description.GroupName}";
+            options.SwaggerEndpoint(url, name);
+        }
+    });
 }
 
 ApiVersionSet apiVersionSet = app.NewApiVersionSet("products-api")

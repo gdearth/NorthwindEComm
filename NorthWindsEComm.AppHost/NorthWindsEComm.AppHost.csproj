@@ -26,15 +26,15 @@
   <ItemGroup>
     <None Remove="sqlserverscripts\instnwnd.sql" />
     <Resource Include="sqlserverscripts\instnwnd.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <None Remove="sqlserverconfig\configure-db.sh" />
     <Resource Include="sqlserverconfig\configure-db.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <None Remove="sqlserverconfig\entrypoint.sh" />
     <Resource Include="sqlserverconfig\entrypoint.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 

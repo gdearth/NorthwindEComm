@@ -1,9 +1,12 @@
 using System.Reflection;
+using Aspire.Hosting;
 using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var sql = builder.AddSqlServer("northWindsDb")
+var password = builder.AddParameter("password", true);
+
+var sql = builder.AddSqlServer("northWindsDb", password)
     .WithBindMount("./sqlserverconfig", "/usr/config")
     .WithBindMount("./sqlserverscripts", "/docker-entrypoint-initdb.d")
     .WithEntrypoint("/usr/config/entrypoint.sh").AddDatabase("northWindsData", "NorthWinds");

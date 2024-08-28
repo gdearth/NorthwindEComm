@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using Microsoft.OpenApi.Models;
 using NorthWindsEComm.Categories.Api;
 using NorthWindsEComm.CrudHelper;
 
@@ -8,16 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new ApiVersion(1, 0);
+    config.AssumeDefaultVersionWhenUnspecified = true;
     config.ReportApiVersions = true;
-    config.AssumeDefaultVersionWhenUnspecified = false;
-    config.ApiVersionReader = new UrlSegmentApiVersionReader();
-}).AddApiExplorer(config=>{config.GroupNameFormat = "v'V'";});
+}).AddApiExplorer(config =>
+{
+    config.GroupNameFormat = "'v'VVV";
+    config.SubstituteApiVersionInUrl = true;
+});
 
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = $"Categories v1", Version = "v1" });
+    var filePath = Path.Combine(AppContext.BaseDirectory, $"NorthWindsEComm.Categories.Api.xml");
+    options.IncludeXmlComments(filePath);
+});
 
 builder.AddServiceDefaults();
 
@@ -31,11 +40,21 @@ builder.Services.AddTransient<ICrudDataAccess<Category>, CategoryDataAccess>();
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var descriptions = app.DescribeApiVersions();
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = $"Categories {description.GroupName}";
+            options.SwaggerEndpoint(url, name);
+        }
+    });
 }
 
 ApiVersionSet apiVersionSet = app.NewApiVersionSet("categories-api")

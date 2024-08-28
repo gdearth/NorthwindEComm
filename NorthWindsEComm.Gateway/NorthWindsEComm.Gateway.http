@@ -1,7 +1,7 @@
 @NorthWindsEComm.Gateway_HostAddress = http://localhost:5075
 @version = v1
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/{{version}}/fillCache
+GET {{NorthWindsEComm.Gateway_HostAddress}}/bff/{{version}}/fillCache
 Accept: application/json
 
 > {%
@@ -61,7 +61,7 @@ Accept: application/json
 
 ###
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/{{version}}/products/1
+GET {{NorthWindsEComm.Gateway_HostAddress}}/bff/{{version}}/products/1
 Accept: application/json
 
 > {%
@@ -72,7 +72,7 @@ Accept: application/json
 
 ###
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/agg/{{version}}/categories/1
+GET {{NorthWindsEComm.Gateway_HostAddress}}/bff/{{version}}/categories/1
 Accept: application/json
 
 > {%

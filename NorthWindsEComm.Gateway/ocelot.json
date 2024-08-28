@@ -101,12 +101,12 @@
   ],
   "Aggregates": [
     {
-      "UpstreamPathTemplate": "/agg/{version}/fillCache",
+      "UpstreamPathTemplate": "/bff/{version}/fillCache",
       "UpstreamHttpMethod": [ "Get" ],
       "RouteKeys": [ "allProducts", "allSuppliers", "allCategories" ]
     },
     {
-      "UpstreamPathTemplate": "/agg/{version}/products/{productId}",
+      "UpstreamPathTemplate": "/bff/{version}/products/{productId}",
       "UpstreamHttpMethod": [ "Get" ],
       "RouteKeys": [ "product", "supplier", "category" ],
       "RouteKeysConfig" : [
@@ -123,7 +123,7 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/agg/{version}/categories/{categoryId}",
+      "UpstreamPathTemplate": "/bff/{version}/categories/{categoryId}",
       "UpstreamHttpMethod": [ "Get" ],
       "RouteKeys": [ "productsByCategoryId", "category" ]
     }
