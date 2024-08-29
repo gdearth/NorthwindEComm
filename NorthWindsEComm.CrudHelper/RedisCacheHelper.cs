@@ -3,11 +3,13 @@ using StackExchange.Redis;
 
 namespace NorthWindsEComm.CrudHelper;
 
+/// <inheritdoc />
 public class RedisCacheHelper<T> : ICrudCacheAccess<T> where T : class, IIdModel
 {
     private readonly IConnectionMultiplexer _connectionMultiplexer;
     private readonly IDatabase _database;
     private readonly string _indexPrefix = typeof(T).Name.ToLower();
+    private readonly string _idProperty = nameof(IIdModel.Id).ToLower();
     
     public RedisCacheHelper(IConnectionMultiplexer connectionMultiplexer)
     {
@@ -15,44 +17,47 @@ public class RedisCacheHelper<T> : ICrudCacheAccess<T> where T : class, IIdModel
         _database = _connectionMultiplexer.GetDatabase();
     }
     
+    /// <inheritdoc />
     public async Task<List<T>> GetAllAsync(CancellationToken ctx)
     {
         var endPoints = _connectionMultiplexer.GetEndPoints();
         var server = _connectionMultiplexer.GetServer(endPoints[0]);
-        List<RedisValue> response = new();
+        List<RedisValue> response = [];
         
-        foreach (var key in server.Keys(pattern: _indexPrefix + ".*"))
+        foreach (var key in server.Keys(pattern: $"{_indexPrefix}:{_idProperty}:*"))
             response.Add(await _database.StringGetAsync(key));
-        if(response.Count == 0)
-            return [];
-        return response.Select(r => JsonSerializer.Deserialize<T>(r)).ToList();
+        return response.Count == 0 ? [] : response.Select(r => JsonSerializer.Deserialize<T>(r)).ToList();
     }
 
+    /// <inheritdoc />
     public async Task<T?> GetByIdAsync(int id, CancellationToken ctx)
     {
-        RedisValue response = await _database.StringGetAsync($"{_indexPrefix}.{id}");
+        RedisValue response = await _database.StringGetAsync($"{_indexPrefix}:{_idProperty}:{id}");
         if(response.IsNull)
             return default;
         return JsonSerializer.Deserialize<T>(response!);
     }
 
+    /// <inheritdoc />
     public async Task<T?> CreateAsync(T entity, CancellationToken ctx)
     {
-        var response = await _database.StringSetAndGetAsync($"{_indexPrefix}.{entity.Id}", JsonSerializer.Serialize(entity));
+        var response = await _database.StringSetAndGetAsync($"{_indexPrefix}:{_idProperty}:{entity.Id}", JsonSerializer.Serialize(entity));
         if(response.IsNull)
             return default;
         return JsonSerializer.Deserialize<T>(response!);
     }
 
-    public async Task<T?> UpdateAsync(T entity, CancellationToken ctx)
+    /// <inheritdoc />
+    public async Task<T?> UpdateAsync(int id, T entity, CancellationToken ctx)
     {
-        await DeleteAsync(entity.Id, ctx);
+        await DeleteAsync(id, ctx);
         return await CreateAsync(entity, ctx);
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteAsync(int id, CancellationToken ctx)
     {
-        await _database.KeyDeleteAsync($"{_indexPrefix}.{id}");
+        await _database.KeyDeleteAsync($"{_indexPrefix}:{_idProperty}:{id}");
         return true;
     }
 }

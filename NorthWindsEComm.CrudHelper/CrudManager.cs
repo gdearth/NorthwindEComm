@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace NorthWindsEComm.CrudHelper;
 
+/// <inheritdoc />
 public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
 {
     private readonly ICrudDataAccess<T> _dataAccess;
@@ -15,6 +16,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
         _logger = logger;
     }
 
+    /// <inheritdoc />
     public async Task<List<T>> GetAllAsync(CancellationToken ctx)
     {
         var results = await _cacheAccess.GetAllAsync(ctx);
@@ -35,6 +37,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
         return results;
     }
 
+    /// <inheritdoc />
     public async Task<T?> GetByIdAsync(int id, CancellationToken ctx)
     {
         var result = await _cacheAccess.GetByIdAsync(id, ctx);
@@ -55,12 +58,13 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
         return result;
     }
 
+    /// <inheritdoc />
     public async Task<T?> CreateAsync(T entity, CancellationToken ctx)
     {
         var result = await  _dataAccess.CreateAsync(entity, ctx);
         if (result is not null)
         {
-            _logger.LogInformation("Created database record with id: {entity.Id}", entity.Id);
+            _logger.LogInformation("Created database record with id: {result.Id}", result.Id);
             var cacheResult = await _cacheAccess.CreateAsync(result, ctx);
             if (cacheResult is not null)
                 _logger.LogInformation("Created cache record with id: {cacheResult.Id}", cacheResult.Id);
@@ -69,13 +73,14 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
         return result;
     }
 
-    public async Task<T?> UpdateAsync(T entity, CancellationToken ctx)
+    /// <inheritdoc />
+    public async Task<T?> UpdateAsync(int id, T entity, CancellationToken ctx)
     {
-        var result = await _dataAccess.UpdateAsync(entity, ctx);
+        var result = await _dataAccess.UpdateAsync(id, entity, ctx);
         if (result is not null)
         {
             _logger.LogInformation("Updated database record with id: {entity.Id}", entity.Id);
-            var cacheResult = await _cacheAccess.UpdateAsync(result, ctx);
+            var cacheResult = await _cacheAccess.UpdateAsync(id, result, ctx);
             if (cacheResult is not null)
                 _logger.LogInformation("Updated cache record with id: {cacheResult.Id}", cacheResult.Id);
         }
@@ -83,6 +88,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
         return result;
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteAsync(int id, CancellationToken ctx)
     {
         var result = await _dataAccess.DeleteAsync(id, ctx);

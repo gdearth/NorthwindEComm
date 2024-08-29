@@ -61,7 +61,7 @@ Accept: application/json
 
 ###
 
-GET {{NorthWindsEComm.Gateway_HostAddress}}/bff/{{version}}/products/1
+GET {{NorthWindsEComm.Gateway_HostAddress}}/bff/{{version}}/products/79
 Accept: application/json
 
 > {%
@@ -115,3 +115,20 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {{ocelot_config}}
+
+###
+
+POST {{NorthWindsEComm.Gateway_HostAddress}}/api/{{version}}/products
+Content-Type: application/json
+
+{
+  "productName": "Dog Treats",
+  "supplierId": 8,
+  "categoryId": 5,
+  "quantityPerUnit": "24 treats",
+  "unitPrice": 15.25,
+  "unitsInStock": 12,
+  "unitsOnOrder": 24,
+  "reorderLevel": 15,
+  "discontinued": false
+}

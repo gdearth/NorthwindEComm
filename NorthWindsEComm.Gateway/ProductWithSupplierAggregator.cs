@@ -6,6 +6,13 @@ using Ocelot.Multiplexer;
 
 namespace NorthWindsEComm.Gateway;
 
+/// <summary>
+/// Represents an aggregator that combines product data with supplier data.
+/// </summary>
+/// <remarks>
+/// The <c>ProductWithSupplierAggregator</c> is an implementation of the <c>IDefinedAggregator</c> interface.
+/// It is responsible for aggregating the product data and supplier data into a single result.
+/// </remarks>
 public class ProductWithSupplierAggregator : IDefinedAggregator
 {
     private readonly HttpClient _httpClient;
@@ -18,6 +25,11 @@ public class ProductWithSupplierAggregator : IDefinedAggregator
         _logger.LogInformation("ProductWithSupplierAggregator has been initialized.");
     }
 
+    /// <summary>
+    /// Aggregates the product data with supplier data and returns the combined result.
+    /// </summary>
+    /// <param name="responses">The list of HttpContext objects containing the downstream responses.</param>
+    /// <returns>A Task of DownstreamResponse representing the aggregated result.</returns>
     public async Task<DownstreamResponse> Aggregate(List<HttpContext> responses)
     {
         _logger.LogInformation("ProductWithSupplierAggregator has started.");
@@ -53,6 +65,9 @@ public class ProductWithSupplierAggregator : IDefinedAggregator
     }
 }
 
+/// <summary>
+/// Represents a product with its associated supplier information.
+/// </summary>
 public record ProductWithSupplier : Product
 {
     public Supplier Supplier { get; set; } = new();

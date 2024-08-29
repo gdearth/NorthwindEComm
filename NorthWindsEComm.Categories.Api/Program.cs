@@ -1,8 +1,9 @@
-using Asp.Versioning;
 using Asp.Versioning.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using NorthWindsEComm.Categories.Api;
 using NorthWindsEComm.CrudHelper;
+using ApiVersion = Asp.Versioning.ApiVersion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,22 +65,33 @@ ApiVersionSet apiVersionSet = app.NewApiVersionSet("categories-api")
 
 app.UseHttpsRedirection();
 
-var productsGroup = app.MapGroup("/v{version:apiVersion}/categories")
+var categoriesGroup = app.MapGroup("/v{version:apiVersion}/categories")
     .WithApiVersionSet(apiVersionSet)
     .WithOpenApi();
 
-var productsGroupV1 = productsGroup.MapGroup("/")
+var categoriesGroupV1 = categoriesGroup.MapGroup("/")
     .MapToApiVersion(1);
 
-productsGroupV1.MapGet("/",
+categoriesGroupV1.MapGet("/",
         async (ICrudManager<Category> manager, CancellationToken token) => await manager.GetAllAsync(token))
     .WithName("GetCategories");
 
-productsGroupV1.MapGet("/{id:int}", async (int id, ICrudManager<Category> manager, CancellationToken token) =>
+categoriesGroupV1.MapPost("/",
+        async ([FromBody] Category category, ICrudManager<Category> manager, CancellationToken token) => await manager.CreateAsync(category, token))
+    .WithName("CreateCategories");
+
+categoriesGroupV1.MapGet("/{id:int}", async ([FromRoute] int id, ICrudManager<Category> manager, CancellationToken token) =>
     {
         Category? product = await manager.GetByIdAsync(id, token);
         return product == null ? Results.NotFound() : Results.Ok(product);
     })
     .WithName("GetCategoryById");
+
+categoriesGroupV1.MapPut("/{id:int}", async ([FromRoute] int id, [FromBody]Category category, ICrudManager<Category> manager, CancellationToken token) =>
+    {
+        Category? response = await manager.UpdateAsync(id, category, token);
+        return response == null ? Results.NotFound() : Results.Ok(response);
+    })
+    .WithName("UpdateCategoryById");
 
 app.Run();

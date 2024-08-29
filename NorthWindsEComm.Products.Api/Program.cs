@@ -43,6 +43,7 @@ builder.AddRedisClient("cache");
 builder.Services.AddTransient<IProductManager, ProductManager>();
 builder.Services.AddTransient<ICrudCacheAccess<Product>, RedisCacheHelper<Product>>();
 builder.Services.AddTransient<IProductDataAccess, ProductDataAccess>();
+builder.Services.AddTransient<StartupService>();
 
 var app = builder.Build();
 
@@ -83,6 +84,10 @@ productsGroupV1.MapGet("/",
         categoryId is null ? await manager.GetAllAsync(token) : await manager.GetProductsByCategoryIdAsync((int)categoryId, token))
     .WithName("GetProducts");
 
+productsGroupV1.MapPost("/",
+        async ([FromBody] Product product, IProductManager manager, CancellationToken token) => await manager.CreateAsync(product, token))
+    .WithName("CreateProducts");
+
 productsGroupV1.MapGet("/{id:int}", async (int id, IProductManager manager, CancellationToken token) =>
     {
         Product? product = await manager.GetByIdAsync(id, token);
@@ -90,5 +95,11 @@ productsGroupV1.MapGet("/{id:int}", async (int id, IProductManager manager, Canc
     })
     .WithName("GetProductById");
 
-app.Run();
+productsGroupV1.MapPut("/{id:int}", async ([FromRoute] int id, [FromBody]Product product, IProductManager manager, CancellationToken token) =>
+    {
+        Product? response = await manager.UpdateAsync(id, product, token);
+        return response == null ? Results.NotFound() : Results.Ok(response);
+    })
+    .WithName("UpdateProductById");
 
+app.Run();

@@ -13,6 +13,9 @@ var sql = builder.AddSqlServer("northWindsDb", password)
 
 var redis = builder.AddRedis("cache");
 
+var kafka = builder.AddKafka("messaging")
+    .WithKafkaUI();
+
 var productsApi = builder.AddProject<NorthWindsEComm_Products_Api>("products-api")
     .WithReference(sql)
     .WithReference(redis);
