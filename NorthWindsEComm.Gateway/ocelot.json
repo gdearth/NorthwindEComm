@@ -7,7 +7,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api"
+          "Host": "localhost",
+          "Port": 5158
         }
       ],
       "Priority": 1,
@@ -20,7 +21,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api"
+          "Host": "localhost",
+          "Port": 5158
         }
       ],
       "Priority": 0,
@@ -33,7 +35,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "suppliers-api"
+          "Host": "localhost",
+          "Port": 5105
         }
       ],
       "Priority": 1,
@@ -46,7 +49,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "suppliers-api"
+          "Host": "localhost",
+          "Port": 5105
         }
       ],
       "Key": "supplier",
@@ -59,7 +63,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api"
+          "Host": "localhost",
+          "Port": 5158
         }
       ],
       "Priority": 2,
@@ -72,7 +77,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "categories-api"
+          "Host": "localhost",
+          "Port": 5091
         }
       ],
       "Priority": 1,
@@ -85,7 +91,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "categories-api"
+          "Host": "localhost",
+          "Port": 5091
         }
       ],
       "Priority": 0,
