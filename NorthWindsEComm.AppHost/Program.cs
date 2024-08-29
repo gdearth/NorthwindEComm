@@ -29,9 +29,9 @@ var categoriesApi = builder.AddProject<NorthWindsEComm_Categories_Api>("categori
     .WithReference(redis);
 
 var gateway = builder.AddProject<NorthWindsEComm_Gateway>("gateway")
-    .WithReference(productsApi)
-    .WithReference(suppliersApi)
-    .WithReference(categoriesApi)
+    .WithEnvironment("Services__productsApi__DownstreamPath", productsApi.GetEndpoint("https"))
+    .WithEnvironment("Services__categoriesApi__DownstreamPath", categoriesApi.GetEndpoint("https"))
+    .WithEnvironment("Services__suppliersApi__DownstreamPath", suppliersApi.GetEndpoint("https"))
     .WithExternalHttpEndpoints();
 
 builder.Build().Run();

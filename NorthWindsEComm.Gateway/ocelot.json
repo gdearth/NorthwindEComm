@@ -5,12 +5,7 @@
       "UpstreamPathTemplate": "/api/{version}/products",
       "DownstreamPathTemplate": "/{version}/products",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7202
-        }
-      ],
+      "ServiceName": "productsApi",
       "Priority": 1,
       "Key": "allProducts"
     },
@@ -19,12 +14,7 @@
       "UpstreamPathTemplate": "/api/{version}/products/{productId}",
       "DownstreamPathTemplate": "/{version}/products/{productId}",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7202
-        }
-      ],
+      "ServiceName": "productsApi",
       "Priority": 0,
       "Key": "product"
     },
@@ -33,12 +23,7 @@
       "UpstreamPathTemplate": "/api/{version}/suppliers",
       "DownstreamPathTemplate": "/{version}/suppliers",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7061
-        }
-      ],
+      "ServiceName": "suppliersApi",
       "Priority": 1,
       "Key": "allSuppliers"
     },
@@ -47,12 +32,7 @@
       "UpstreamPathTemplate": "/api/{version}/suppliers/{supplierId}",
       "DownstreamPathTemplate": "/{version}/suppliers/{supplierId}",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7061
-        }
-      ],
+      "ServiceName": "suppliersApi",
       "Key": "supplier",
       "Priority": 0
     },
@@ -61,12 +41,7 @@
       "UpstreamPathTemplate": "/api/{version}/categories/{categoryId}/products",
       "DownstreamPathTemplate": "/{version}/products?categoryId={categoryId}",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7202
-        }
-      ],
+      "ServiceName": "productsApi",
       "Priority": 2,
       "Key": "productsByCategoryId"
     },
@@ -75,12 +50,7 @@
       "UpstreamPathTemplate": "/api/{version}/categories",
       "DownstreamPathTemplate": "/{version}/categories",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7166
-        }
-      ],
+      "ServiceName": "categoriesApi",
       "Priority": 1,
       "Key": "allCategories"
     },
@@ -89,12 +59,7 @@
       "UpstreamPathTemplate": "/api/{version}/categories/{categoryId}",
       "DownstreamPathTemplate": "/{version}/categories/{categoryId}",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7166
-        }
-      ],
+      "ServiceName": "categoriesApi",
       "Priority": 0,
       "Key": "category"
     }
@@ -129,6 +94,10 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7181"
+    "BaseUrl": "https://localhost:7181",
+    "ServiceDiscoveryProvider": {
+      "Type": "AppConfiguration",
+      "PollingIntervalSeconds":  10000
+    }
   }
 }

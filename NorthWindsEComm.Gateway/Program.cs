@@ -2,6 +2,7 @@ using NorthWindsEComm.Gateway;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Microsoft.Extensions.Hosting;
+using MMLib.Ocelot.Provider.AppConfiguration;
 using Ocelot.Administration;using Ocelot.Configuration.File;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,6 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddServiceDiscovery();
 builder.Services.AddDnsSrvServiceEndpointProvider();
 
-
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,9 +25,9 @@ builder.AddServiceDefaults();
 builder.Services.AddHttpClient<ProductWithSupplierAggregator>();
 
 builder.Services.AddOcelot()
+    .AddAppConfiguration()
     .AddTransientDefinedAggregator<ProductWithSupplierAggregator>()
     .AddAdministration("/administration", "secret");
-
 
 var app = builder.Build();
 
