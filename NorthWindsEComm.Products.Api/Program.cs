@@ -43,7 +43,6 @@ builder.AddRedisClient("cache");
 builder.Services.AddTransient<IProductManager, ProductManager>();
 builder.Services.AddTransient<ICrudCacheAccess<Product>, RedisCacheHelper<Product>>();
 builder.Services.AddTransient<IProductDataAccess, ProductDataAccess>();
-builder.Services.AddTransient<StartupService>();
 
 var app = builder.Build();
 

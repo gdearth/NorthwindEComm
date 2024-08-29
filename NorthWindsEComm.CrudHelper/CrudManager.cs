@@ -17,7 +17,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<List<T>> GetAllAsync(CancellationToken ctx)
+    public virtual async Task<List<T>> GetAllAsync(CancellationToken ctx)
     {
         var results = await _cacheAccess.GetAllAsync(ctx);
         if (results.Count > 0)
@@ -38,7 +38,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<T?> GetByIdAsync(int id, CancellationToken ctx)
+    public virtual async Task<T?> GetByIdAsync(int id, CancellationToken ctx)
     {
         var result = await _cacheAccess.GetByIdAsync(id, ctx);
         if (result is not null)
@@ -59,7 +59,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<T?> CreateAsync(T entity, CancellationToken ctx)
+    public virtual async Task<T?> CreateAsync(T entity, CancellationToken ctx)
     {
         var result = await  _dataAccess.CreateAsync(entity, ctx);
         if (result is not null)
@@ -74,7 +74,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<T?> UpdateAsync(int id, T entity, CancellationToken ctx)
+    public virtual async Task<T?> UpdateAsync(int id, T entity, CancellationToken ctx)
     {
         var result = await _dataAccess.UpdateAsync(id, entity, ctx);
         if (result is not null)
@@ -89,7 +89,7 @@ public class CrudManager<T> : ICrudManager<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<bool> DeleteAsync(int id, CancellationToken ctx)
+    public virtual async Task<bool> DeleteAsync(int id, CancellationToken ctx)
     {
         var result = await _dataAccess.DeleteAsync(id, ctx);
         if (!result) return result;

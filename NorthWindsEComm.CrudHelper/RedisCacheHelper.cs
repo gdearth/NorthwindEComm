@@ -18,7 +18,7 @@ public class RedisCacheHelper<T> : ICrudCacheAccess<T> where T : class, IIdModel
     }
     
     /// <inheritdoc />
-    public async Task<List<T>> GetAllAsync(CancellationToken ctx)
+    public virtual async Task<List<T>> GetAllAsync(CancellationToken ctx)
     {
         var endPoints = _connectionMultiplexer.GetEndPoints();
         var server = _connectionMultiplexer.GetServer(endPoints[0]);
@@ -30,7 +30,7 @@ public class RedisCacheHelper<T> : ICrudCacheAccess<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<T?> GetByIdAsync(int id, CancellationToken ctx)
+    public virtual async Task<T?> GetByIdAsync(int id, CancellationToken ctx)
     {
         RedisValue response = await _database.StringGetAsync($"{_indexPrefix}:{_idProperty}:{id}");
         if(response.IsNull)
@@ -39,7 +39,7 @@ public class RedisCacheHelper<T> : ICrudCacheAccess<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<T?> CreateAsync(T entity, CancellationToken ctx)
+    public virtual async Task<T?> CreateAsync(T entity, CancellationToken ctx)
     {
         var response = await _database.StringSetAndGetAsync($"{_indexPrefix}:{_idProperty}:{entity.Id}", JsonSerializer.Serialize(entity));
         if(response.IsNull)
@@ -48,14 +48,14 @@ public class RedisCacheHelper<T> : ICrudCacheAccess<T> where T : class, IIdModel
     }
 
     /// <inheritdoc />
-    public async Task<T?> UpdateAsync(int id, T entity, CancellationToken ctx)
+    public virtual async Task<T?> UpdateAsync(int id, T entity, CancellationToken ctx)
     {
         await DeleteAsync(id, ctx);
         return await CreateAsync(entity, ctx);
     }
 
     /// <inheritdoc />
-    public async Task<bool> DeleteAsync(int id, CancellationToken ctx)
+    public virtual async Task<bool> DeleteAsync(int id, CancellationToken ctx)
     {
         await _database.KeyDeleteAsync($"{_indexPrefix}:{_idProperty}:{id}");
         return true;

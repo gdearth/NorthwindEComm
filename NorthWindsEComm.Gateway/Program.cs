@@ -12,7 +12,8 @@ builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.Environment
     reloadOnChange: true);
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
-    
+builder.Services.AddServiceDiscovery();
+builder.Services.AddDnsSrvServiceEndpointProvider();
 
 
 // Add services to the container.
