@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using NorthWindsEComm.Categories.Api;
 using NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Base;
+using NorthWindsEComm.CrudHelper.Cache;
+using NorthWindsEComm.CrudHelper.Messaging;
 using ApiVersion = Asp.Versioning.ApiVersion;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,9 +38,13 @@ builder.AddSqlServerDbContext<NorthWindsDbContext>("northWindsData");
 
 builder.AddRedisClient("cache");
 
+builder.Services.AddTransient<IKafkaHelper<Category>, KafkaHelper<Category>>();
 builder.Services.AddTransient<ICrudManager<Category>, CrudManager<Category>>();
 builder.Services.AddTransient<ICrudCacheAccess<Category>, RedisCacheHelper<Category>>();
 builder.Services.AddTransient<ICrudDataAccess<Category>, CategoryDataAccess>();
+builder.Services.AddSingleton<CacheHitMetrics>();
+
+builder.AddKafkaProducer<string, string>("messaging");
 
 var app = builder.Build();
 

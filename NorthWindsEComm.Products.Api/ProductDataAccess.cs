@@ -45,15 +45,11 @@ public class ProductDataAccess : IProductDataAccess
     {
         var product = await GetByIdAsync(id, ctx);
         if (product != null)
-        {
             _dbContext.Entry(product).CurrentValues.SetValues(entity);
-            await _dbContext.SaveChangesAsync(ctx);
-        }
         else
-        {
             return await CreateAsync(entity, ctx);
-        }
-
+        
+        await _dbContext.SaveChangesAsync(ctx);
         return await GetByIdAsync(id, ctx);
     }
 

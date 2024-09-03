@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
+using NorthWindsEComm.CrudHelper.Base;
 using StackExchange.Redis;
 
-namespace NorthWindsEComm.CrudHelper;
+namespace NorthWindsEComm.CrudHelper.Cache;
 
 /// <inheritdoc />
 public class RedisCacheHelper<T> : ICrudCacheAccess<T> where T : class, IIdModel

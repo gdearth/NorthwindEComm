@@ -1,15 +1,20 @@
 ﻿using NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Base;
+using NorthWindsEComm.CrudHelper.Cache;
+using NorthWindsEComm.CrudHelper.Messaging;
 
 namespace NorthWindsEComm.Products.Api;
 
 /// <inheritdoc cref="NorthWindsEComm.Products.Api.IProductManager" />
 public class ProductManager : CrudManager<Product>, IProductManager
 {
-    private readonly IProductDataAccess _dataAccess;
+    private readonly IProductDataAccess _productDataAccess;
 
-    public ProductManager(IProductDataAccess dataAccess, ICrudCacheAccess<Product> cacheAccess, ILogger<CrudManager<Product>> logger) : base(dataAccess, cacheAccess, logger)
+    public ProductManager(IProductDataAccess dataAccess, ICrudCacheAccess<Product> cacheAccess, 
+        ILogger<CrudManager<Product>> logger, IKafkaHelper<Product> kafkaHelper, CacheHitMetrics metrics) 
+        : base(dataAccess, cacheAccess, logger, metrics, kafkaHelper)
     {
-        _dataAccess = dataAccess;
+        _productDataAccess = dataAccess;
     }
 
     /// <summary>
@@ -19,5 +24,5 @@ public class ProductManager : CrudManager<Product>, IProductManager
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation. The task result contains a list of products.</returns>
     public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId, CancellationToken cancellationToken)
-        => await _dataAccess.GetProductsByCategoryIdAsync(categoryId, cancellationToken);
+        => await _productDataAccess.GetProductsByCategoryIdAsync(categoryId, cancellationToken);
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Base;
 
 namespace NorthWindsEComm.Suppliers.Api;
 
@@ -36,7 +37,7 @@ public class SupplierDataAccess : ICrudDataAccess<Supplier>
         }
 
         var response = await _dbContext.Suppliers.AddAsync(entity, ctx);
-        await _dbContext.SaveChangesAsync(false, ctx);
+        await _dbContext.SaveChangesAsync(ctx);
         return response.Entity;
     }
 
@@ -45,15 +46,11 @@ public class SupplierDataAccess : ICrudDataAccess<Supplier>
     {
         var Supplier = await GetByIdAsync(id, ctx);
         if (Supplier != null)
-        {
             _dbContext.Entry(Supplier).CurrentValues.SetValues(entity);
-            await _dbContext.SaveChangesAsync(ctx);
-        }
         else
-        {
             return await CreateAsync(entity, ctx);
-        }
-
+        
+        await _dbContext.SaveChangesAsync(ctx);
         return await GetByIdAsync(id, ctx);
     }
 

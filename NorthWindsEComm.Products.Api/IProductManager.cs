@@ -1,4 +1,5 @@
 ﻿using NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Base;
 
 namespace NorthWindsEComm.Products.Api;
 

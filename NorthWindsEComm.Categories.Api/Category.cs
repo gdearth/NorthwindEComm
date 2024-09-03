@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Base;
 
 namespace NorthWindsEComm.Categories.Api;
 

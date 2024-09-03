@@ -1,4 +1,4 @@
-namespace NorthWindsEComm.CrudHelper;
+namespace NorthWindsEComm.CrudHelper.Base;
 
 /// <summary>
 /// Represents a CRUD manager that provides basic CRUD operations for a specific type of entity.

@@ -1,4 +1,4 @@
-﻿namespace NorthWindsEComm.CrudHelper;
+﻿namespace NorthWindsEComm.CrudHelper.Base;
 
 /// <summary>
 /// Represents an interface for CRUD (Create, Read, Update, Delete) operations for a specific entity.

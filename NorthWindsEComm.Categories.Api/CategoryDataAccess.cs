@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Base;
 
 namespace NorthWindsEComm.Categories.Api;
 
@@ -30,6 +31,7 @@ public class CategoryDataAccess : ICrudDataAccess<Category>
         }
 
         var response = await _dbContext.Categories.AddAsync(entity, ctx);
+        await _dbContext.SaveChangesAsync(ctx);
         return response.Entity;
     }
 
@@ -42,6 +44,7 @@ public class CategoryDataAccess : ICrudDataAccess<Category>
         else
             return await CreateAsync(entity, ctx);
         
+        await _dbContext.SaveChangesAsync(ctx);
         return await GetByIdAsync(id, ctx);
     }
 
@@ -52,6 +55,7 @@ public class CategoryDataAccess : ICrudDataAccess<Category>
         if (product == null) return false;
         
         _dbContext.Categories.Remove(product);
+        await _dbContext.SaveChangesAsync(ctx);
         return true;
     }
 }

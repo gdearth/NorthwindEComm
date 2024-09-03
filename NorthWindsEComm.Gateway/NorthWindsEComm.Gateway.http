@@ -1,4 +1,4 @@
-@NorthWindsEComm.Gateway_HostAddress = http://localhost:5075
+@NorthWindsEComm.Gateway_HostAddress = https://localhost:7181
 @version = v1
 
 GET {{NorthWindsEComm.Gateway_HostAddress}}/bff/{{version}}/fillCache
@@ -132,3 +132,35 @@ Content-Type: application/json
   "reorderLevel": 15,
   "discontinued": false
 }
+
+###
+
+POST {{NorthWindsEComm.Gateway_HostAddress}}/api/{{version}}/categories
+Content-Type: application/json
+
+{
+  "categoryName": "Dog Supplies",
+  "description": "Dog food, toys, grooming, and supplies"
+}
+
+###
+
+POST {{NorthWindsEComm.Gateway_HostAddress}}/api/{{version}}/suppliers
+Content-Type: application/json
+
+{
+  "companyName": "Paww Purrs",
+  "contactName": "Buddy Puppy",
+  "contactTitle": "Purchasing Manager",
+  "address": "123 Bark St",
+  "city": "Gotham",
+  "region": null,
+  "postalCode": "69420",
+  "country": "US",
+  "phone": "(171) 555-2222",
+  "fax": null,
+  "homePage": null
+}
+
+###
+

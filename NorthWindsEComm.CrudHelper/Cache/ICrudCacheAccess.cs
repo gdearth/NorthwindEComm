@@ -1,4 +1,6 @@
-namespace NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Base;
+
+namespace NorthWindsEComm.CrudHelper.Cache;
 
 public interface ICrudCacheAccess<T> where T : class, IIdModel
 {

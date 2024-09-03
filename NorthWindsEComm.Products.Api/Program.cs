@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NorthWindsEComm.CrudHelper;
+using NorthWindsEComm.CrudHelper.Cache;
+using NorthWindsEComm.CrudHelper.Messaging;
 using NorthWindsEComm.Products.Api;
 using ApiVersion = Asp.Versioning.ApiVersion;
 
@@ -40,9 +42,13 @@ builder.AddSqlServerDbContext<NorthWindsDbContext>("northWindsData");
 
 builder.AddRedisClient("cache");
 
+builder.Services.AddTransient<IKafkaHelper<Product>, KafkaHelper<Product>>();
 builder.Services.AddTransient<IProductManager, ProductManager>();
 builder.Services.AddTransient<ICrudCacheAccess<Product>, RedisCacheHelper<Product>>();
 builder.Services.AddTransient<IProductDataAccess, ProductDataAccess>();
+builder.Services.AddSingleton<CacheHitMetrics>();
+
+builder.AddKafkaProducer<string, string>("messaging");
 
 var app = builder.Build();
 

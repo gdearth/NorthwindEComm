@@ -18,15 +18,18 @@ var kafka = builder.AddKafka("messaging")
 
 var productsApi = builder.AddProject<NorthWindsEComm_Products_Api>("products-api")
     .WithReference(sql)
-    .WithReference(redis);
+    .WithReference(redis)
+    .WithReference(kafka);
 
 var suppliersApi = builder.AddProject<NorthWindsEComm_Suppliers_Api>("suppliers-api")
     .WithReference(sql)
-    .WithReference(redis);
+    .WithReference(redis)
+    .WithReference(kafka);
 
 var categoriesApi = builder.AddProject<NorthWindsEComm_Categories_Api>("categories-api")
     .WithReference(sql)
-    .WithReference(redis);
+    .WithReference(redis)
+    .WithReference(kafka);
 
 var gateway = builder.AddProject<NorthWindsEComm_Gateway>("gateway")
     .WithEnvironment("Services__productsApi__DownstreamPath", productsApi.GetEndpoint("https"))
